@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"strconv"
+
+	// "sync"
 	"ticketgo/commons"
 	"time"
 )
@@ -15,13 +17,14 @@ var bookings = make([]map[string]string, 0) //--->list of maps
 var firstName, lastName, email string
 var userTickets uint
 
+// var wg = sync.WaitGroup
+
 func main() {
 
 	greet()
 
 	// Booking loop
 	for {
-
 		firstName, lastName, email, userTickets = userDetail()
 
 		// Validation checks
@@ -30,6 +33,7 @@ func main() {
 		if isValidName && isValidEmail && isValidTicketNum {
 
 			booky()
+			// wg.Add(1) //---- taking care of thread work (1) coz we only have one func below
 			go sendTickets(userTickets, firstName, showName)
 
 			// Display list of attendees (only first names)
@@ -39,7 +43,7 @@ func main() {
 			// If tickets are sold out, end the booking process
 			if availableTickets == 0 {
 				fmt.Println("\n🚨 The show is housefull! Thanks for your interest.")
-				break
+				// break
 			}
 		} else {
 			// Handle invalid input
@@ -54,6 +58,7 @@ func main() {
 				fmt.Printf("- Only %v seats are available. Enter a valid number.\n", availableTickets)
 			}
 		}
+		// wg.Wait()
 	}
 }
 
@@ -149,4 +154,5 @@ func sendTickets(userTickets uint, firstName string, showName string) {
 	var ticket = fmt.Sprintf("%v tickets of %v dropped to %v", userTickets, showName, firstName)
 	fmt.Printf("Sending ticket:\n %v at %v\n", ticket, email)
 	println("-----------------------------------------------")
+	// wg.Done()
 }
