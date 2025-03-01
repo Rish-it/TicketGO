@@ -29,7 +29,7 @@ func main() {
 		if isValidName && isValidEmail && isValidTicketNum {
 
 			booky()
-			sendTickets(userTickets, firstName, showName)
+			go sendTickets(userTickets, firstName, showName)
 
 			// Display list of attendees (only first names)
 			firstNames := attendees()
