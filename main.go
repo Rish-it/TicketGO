@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	"strings"
+	"strconv"
+	"ticketgo/commons"
 )
 
 const totalTickets uint = 100
 
 var showName string = "India's Got Latent"
 var availableTickets uint = 100
-var bookings = []string{}
+var bookings = make([]map[string]string, 0) //--->list of maps
 var firstName, lastName, email string
 var userTickets uint
 
@@ -23,7 +24,7 @@ func main() {
 		firstName, lastName, email, userTickets = userDetail()
 
 		// Validation checks
-		isValidName, isValidEmail, isValidTicketNum := validator(firstName, lastName, email, userTickets)
+		isValidName, isValidEmail, isValidTicketNum := commons.Validator(firstName, lastName, email, userTickets, availableTickets)
 
 		if isValidName && isValidEmail && isValidTicketNum {
 			// Process booking
@@ -64,8 +65,7 @@ func greet() {
 func attendees() []string {
 	var firstNames []string
 	for _, booking := range bookings {
-		names := strings.Fields(booking)
-		firstNames = append(firstNames, names[0])
+		firstNames = append(firstNames, booking[firstName])
 	}
 	return firstNames
 }
@@ -93,7 +93,15 @@ func userDetail() (string, string, string, uint) {
 // ✅ FIXED: No parameters needed, using global variables directly
 func booky() {
 	availableTickets = availableTickets - userTickets
-	bookings = append(bookings, firstName+" "+lastName)
+
+	var userData = make(map[string]string)
+	userData = make(map[string]string)
+	userData["firstName"] = firstName
+	userData["lastName"] = firstName
+	userData["email"] = firstName
+	userData["numberOfTickets"] = strconv.FormatUint(uint64(userTickets), 10)
+
+	bookings = append(bookings, userData)
 
 	// Confirmation message
 	fmt.Printf("\n✅ Thank you, %v, for booking %v ticket(s)! for %v. A confirmation email will be sent to %v.\n", firstName, userTickets, showName, email)
