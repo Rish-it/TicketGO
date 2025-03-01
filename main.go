@@ -12,9 +12,8 @@ func main() {
 	var availableTickets uint = 100
 	var bookings []string
 
-	fmt.Printf("🎭 Welcome to the last episode of the century: %v!\n", showName)
-	fmt.Printf("🎟️ Total tickets available: %v\n", totalTickets)
-	fmt.Printf("📢 Book your seats now! Only %v tickets left.\n", availableTickets)
+	// welcome msg
+	greet(showName, totalTickets, availableTickets)
 
 	// Booking loop
 	for {
@@ -75,4 +74,11 @@ func main() {
 			}
 		}
 	}
+}
+
+func greet(showName string, totalTickets uint, availableTickets uint) {
+	fmt.Printf("🎭 Welcome to the last episode of the century: %v!\n", showName)
+	fmt.Printf("🎟️ Total tickets available: %v\n", totalTickets)
+	fmt.Printf("📢 Book your seats now! Only %v tickets left.\n", availableTickets)
+
 }
