@@ -65,7 +65,7 @@ func greet() {
 func attendees() []string {
 	var firstNames []string
 	for _, booking := range bookings {
-		firstNames = append(firstNames, booking[firstName])
+		firstNames = append(firstNames, booking["firstName"])
 	}
 	return firstNames
 }
@@ -103,7 +103,41 @@ func booky() {
 
 	bookings = append(bookings, userData)
 
+	fmt.Printf("List of Bookings %v\n", bookings)
 	// Confirmation message
 	fmt.Printf("\n✅ Thank you, %v, for booking %v ticket(s)! for %v. A confirmation email will be sent to %v.\n", firstName, userTickets, showName, email)
 	fmt.Printf("⚡ Hurry up! Only %v tickets left.\n", availableTickets)
 }
+
+/*
+Another approach for handling the user data is using struct type
+	-: first declare globally
+	var boookings = make ([]UserData, 0)
+
+
+	type UserData struct{
+
+		firstName string
+		lastName string
+		email string
+		numberOfTickets uint
+
+	}
+now inside actual function
+
+var userData = UserData{
+	firstName:firstName,
+	lastName:lastName,
+	email:email,
+	numbeofTicket: userTicket,
+
+}
+	bookings = append(bookings, UserData)
+
+	calling----
+
+
+remove stringConv part
+
+
+*/
