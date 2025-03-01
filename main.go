@@ -15,7 +15,7 @@ var userTickets uint
 
 func main() {
 
-	greet() // ✅ Fixed
+	greet()
 
 	// Booking loop
 	for {
@@ -68,15 +68,6 @@ func attendees() []string {
 		firstNames = append(firstNames, names[0])
 	}
 	return firstNames
-}
-
-// Validates the user input
-func validator(firstName, lastName, email string, userTickets uint) (bool, bool, bool) {
-	isValidName := len(firstName) >= 2 && len(lastName) >= 2
-	isValidEmail := strings.Contains(email, "@")
-	isValidTicketNum := userTickets > 0 && userTickets <= availableTickets
-
-	return isValidName, isValidEmail, isValidTicketNum
 }
 
 func userDetail() (string, string, string, uint) {
