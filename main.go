@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"ticketgo/commons"
+	"time"
 )
 
 const totalTickets uint = 100
@@ -144,6 +145,7 @@ now inside actual function
 remove stringConv part
 */
 func sendTickets(userTickets uint, firstName string, showName string) {
+	time.Sleep(5 * time.Second)
 	var ticket = fmt.Sprintf("%v tickets of %v dropped to %v", userTickets, showName, firstName)
 	fmt.Printf("Sending ticket:\n %v at %v\n", ticket, email)
 	println("-----------------------------------------------")
