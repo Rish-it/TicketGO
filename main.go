@@ -27,8 +27,9 @@ func main() {
 		isValidName, isValidEmail, isValidTicketNum := commons.Validator(firstName, lastName, email, userTickets, availableTickets)
 
 		if isValidName && isValidEmail && isValidTicketNum {
-			// Process booking
-			booky() // ✅ Fixed (no arguments needed)
+
+			booky()
+			sendTickets(userTickets, firstName, showName)
 
 			// Display list of attendees (only first names)
 			firstNames := attendees()
@@ -111,6 +112,7 @@ func booky() {
 
 /*
 Another approach for handling the user data is using struct type
+
 	-: first declare globally
 	var boookings = make ([]UserData, 0)
 
@@ -123,21 +125,26 @@ Another approach for handling the user data is using struct type
 		numberOfTickets uint
 
 	}
+
 now inside actual function
 
-var userData = UserData{
-	firstName:firstName,
-	lastName:lastName,
-	email:email,
-	numbeofTicket: userTicket,
+	var userData = UserData{
+		firstName:firstName,
+		lastName:lastName,
+		email:email,
+		numbeofTicket: userTicket,
 
 }
-	bookings = append(bookings, UserData)
 
-	calling----
+		bookings = append(bookings, UserData)
 
+		calling----IN struct
+	     booking.firstName inplace of booking["firstName"]
 
 remove stringConv part
-
-
 */
+func sendTickets(userTickets uint, firstName string, showName string) {
+	var ticket = fmt.Sprintf("%v tickets of %v dropped to %v", userTickets, showName, firstName)
+	fmt.Printf("Sending ticket:\n %v at %v\n", ticket, email)
+	println("-----------------------------------------------")
+}
