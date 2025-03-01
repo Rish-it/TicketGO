@@ -6,48 +6,73 @@ import (
 )
 
 func main() {
-	// var showName = "India's Got Latent"
-	showName := "India's Got Latent" //syntax sugar but only with variables not possible with "const"
-	const showTickets = 100
+	// Show details
+	showName := "India's Got Latent" // Syntax sugar, but not possible with "const"
+	const totalTickets = 100
 	var availableTickets uint = 100
 	var bookings []string
 
-	fmt.Println("Last Episode of the century", showName)
-	fmt.Println("Tickets are available", showTickets)
-	fmt.Println("Booking Your Seat Now", availableTickets, "Only few are left") // to refactor better you can just have a placeholder %v  whereever you want to use your variables
+	fmt.Printf("🎭 Welcome to the last episode of the century: %v!\n", showName)
+	fmt.Printf("🎟️ Total tickets available: %v\n", totalTickets)
+	fmt.Printf("📢 Book your seats now! Only %v tickets left.\n", availableTickets)
 
+	// Booking loop
 	for {
-		var firstName string
-		var lastName string
-		var email string
+		var firstName, lastName, email string
 		var userTickets uint
 
-		fmt.Println("Enter Your First Name:")
+		// User input
+		fmt.Print("\nEnter Your First Name: ")
 		fmt.Scan(&firstName)
 
-		fmt.Println("Enter Your Last Name:")
+		fmt.Print("Enter Your Last Name: ")
 		fmt.Scan(&lastName)
 
-		fmt.Println("Enter Your Email:")
+		fmt.Print("Enter Your Email: ")
 		fmt.Scan(&email)
 
-		fmt.Println("Enter Number of Tickets:")
-		fmt.Scan(&userTickets) //------> in order to make this work we need a pointer to the address.
+		fmt.Print("Enter Number of Tickets: ")
+		fmt.Scan(&userTickets)
 
-		availableTickets = availableTickets - userTickets
-		bookings = append(bookings, firstName+" "+lastName) //--- using slice for dynamic list mng
+		// Validation checks
+		isValidName := len(firstName) >= 2 && len(lastName) >= 2
+		isValidEmail := strings.Contains(email, "@")
+		isValidTicketNum := userTickets > 0 && userTickets <= availableTickets
 
-		fmt.Printf("Thankyou %v for choosing us and booking %v tickets. You will receive a confirmation email at %v\n", firstName, userTickets, email)
+		if isValidName && isValidEmail && isValidTicketNum {
+			// Process booking
+			availableTickets -= userTickets
+			bookings = append(bookings, firstName+" "+lastName)
 
-		fmt.Printf("Book fast only few are left %v\n", availableTickets)
+			// Confirmation message
+			fmt.Printf("\n✅ Thank you, %v, for booking %v ticket(s)! A confirmation email will be sent to %v.\n", firstName, userTickets, email)
+			fmt.Printf("⚡ Hurry up! Only %v tickets left.\n", availableTickets)
 
-		firstNames := []string{}
-		for _, booking := range bookings { //------>used variable
-			var names = strings.Fields(booking)
-			firstNames = append(firstNames, names[0])
+			// Display list of attendees (only first names)
+			var firstNames []string
+			for _, booking := range bookings {
+				names := strings.Fields(booking)
+				firstNames = append(firstNames, names[0])
+			}
+			fmt.Printf("📜 List of attendees: %v\n", firstNames)
+
+			// If tickets are sold out, end the booking process
+			if availableTickets == 0 {
+				fmt.Println("\n🚨 The show is housefull! Thanks for your interest.")
+				break
+			}
+		} else {
+			// Handle invalid input
+			fmt.Printf("\n❌ Invalid input. Please check:\n")
+			if !isValidName {
+				fmt.Println("- Your first and last names must have at least 2 characters.")
+			}
+			if !isValidEmail {
+				fmt.Println("- Please enter a valid email address.")
+			}
+			if !isValidTicketNum {
+				fmt.Printf("- Only %v seats are available. Enter a valid number.\n", availableTickets)
+			}
 		}
-		fmt.Printf("List of Attendees %v", firstNames)
-
 	}
-
 }
