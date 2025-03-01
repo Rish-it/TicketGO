@@ -5,54 +5,32 @@ import (
 	"strings"
 )
 
-func main() {
-	// Show details
-	showName := "India's Got Latent" // Syntax sugar, but not possible with "const"
-	const totalTickets = 100
-	var availableTickets uint = 100
-	var bookings []string
+const totalTickets uint = 100
 
-	// welcome msg
-	greet(showName, totalTickets, availableTickets)
+var showName string = "India's Got Latent"
+var availableTickets uint = 100
+var bookings = []string{}
+var firstName, lastName, email string
+var userTickets uint
+
+func main() {
+
+	greet() // ✅ Fixed
 
 	// Booking loop
 	for {
-		var firstName, lastName, email string
-		var userTickets uint
 
-		// User input
-		fmt.Print("\nEnter Your First Name: ")
-		fmt.Scan(&firstName)
-
-		fmt.Print("Enter Your Last Name: ")
-		fmt.Scan(&lastName)
-
-		fmt.Print("Enter Your Email: ")
-		fmt.Scan(&email)
-
-		fmt.Print("Enter Number of Tickets: ")
-		fmt.Scan(&userTickets)
+		firstName, lastName, email, userTickets = userDetail()
 
 		// Validation checks
-		isValidName := len(firstName) >= 2 && len(lastName) >= 2
-		isValidEmail := strings.Contains(email, "@")
-		isValidTicketNum := userTickets > 0 && userTickets <= availableTickets
+		isValidName, isValidEmail, isValidTicketNum := validator(firstName, lastName, email, userTickets)
 
 		if isValidName && isValidEmail && isValidTicketNum {
 			// Process booking
-			availableTickets -= userTickets
-			bookings = append(bookings, firstName+" "+lastName)
-
-			// Confirmation message
-			fmt.Printf("\n✅ Thank you, %v, for booking %v ticket(s)! A confirmation email will be sent to %v.\n", firstName, userTickets, email)
-			fmt.Printf("⚡ Hurry up! Only %v tickets left.\n", availableTickets)
+			booky() // ✅ Fixed (no arguments needed)
 
 			// Display list of attendees (only first names)
-			var firstNames []string
-			for _, booking := range bookings {
-				names := strings.Fields(booking)
-				firstNames = append(firstNames, names[0])
-			}
+			firstNames := attendees()
 			fmt.Printf("📜 List of attendees: %v\n", firstNames)
 
 			// If tickets are sold out, end the booking process
@@ -76,9 +54,57 @@ func main() {
 	}
 }
 
-func greet(showName string, totalTickets uint, availableTickets uint) {
+// ✅ FIXED: No parameters needed, using global variables directly
+func greet() {
 	fmt.Printf("🎭 Welcome to the last episode of the century: %v!\n", showName)
-	fmt.Printf("🎟️ Total tickets available: %v\n", totalTickets)
-	fmt.Printf("📢 Book your seats now! Only %v tickets left.\n", availableTickets)
+	fmt.Printf("📢 Book your seats now! Only %v tickets left.\n", totalTickets)
+}
 
+// Returns the first names of attendees
+func attendees() []string {
+	var firstNames []string
+	for _, booking := range bookings {
+		names := strings.Fields(booking)
+		firstNames = append(firstNames, names[0])
+	}
+	return firstNames
+}
+
+// Validates the user input
+func validator(firstName, lastName, email string, userTickets uint) (bool, bool, bool) {
+	isValidName := len(firstName) >= 2 && len(lastName) >= 2
+	isValidEmail := strings.Contains(email, "@")
+	isValidTicketNum := userTickets > 0 && userTickets <= availableTickets
+
+	return isValidName, isValidEmail, isValidTicketNum
+}
+
+func userDetail() (string, string, string, uint) {
+	var firstName, lastName, email string
+	var userTickets uint
+
+	// User input
+	fmt.Print("\nEnter Your First Name: ")
+	fmt.Scan(&firstName)
+
+	fmt.Print("Enter Your Last Name: ")
+	fmt.Scan(&lastName)
+
+	fmt.Print("Enter Your Email: ")
+	fmt.Scan(&email)
+
+	fmt.Print("Enter Number of Tickets: ")
+	fmt.Scan(&userTickets)
+
+	return firstName, lastName, email, userTickets
+}
+
+// ✅ FIXED: No parameters needed, using global variables directly
+func booky() {
+	availableTickets = availableTickets - userTickets
+	bookings = append(bookings, firstName+" "+lastName)
+
+	// Confirmation message
+	fmt.Printf("\n✅ Thank you, %v, for booking %v ticket(s)! for %v. A confirmation email will be sent to %v.\n", firstName, userTickets, showName, email)
+	fmt.Printf("⚡ Hurry up! Only %v tickets left.\n", availableTickets)
 }
